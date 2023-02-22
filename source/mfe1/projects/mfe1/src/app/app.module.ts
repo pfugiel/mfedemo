@@ -1,12 +1,17 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {DoBootstrap, Injector, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {FlightsModule} from './flights/flights.module';
-import {APP_ROUTES} from './app.routes';
 import {HttpClientModule} from '@angular/common/http';
 import {createCustomElement} from '@angular/elements';
+import {FlightsSearchComponent} from './flights/flights-search/flights-search.component';
+
+export const APP_ROUTES: Routes = [
+  {path: 'flights/flights-search', component: FlightsSearchComponent},
+  { path: '', component: HomeComponent, pathMatch: 'full'}
+];
 
 @NgModule({
   imports: [
@@ -24,14 +29,14 @@ import {createCustomElement} from '@angular/elements';
     // AppComponent
   ]
 })
-export class AppModule implements DoBootstrap {
+export class AppModule implements DoBootstrap  {
 
   constructor(private injector: Injector) {
   }
 
   ngDoBootstrap(): void {
     const customElement = createCustomElement(AppComponent, {injector: this.injector});
-    customElements.define('angular1-element', customElement);
+    customElements.define('mfe1-element', customElement);
   }
 
 }

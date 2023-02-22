@@ -1,13 +1,12 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import {
+  startsWith,
   WebComponentWrapper,
   WebComponentWrapperOptions,
 } from '@angular-architects/module-federation-tools';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-
-const URL = 'http://localhost:3000/remoteEntry.js';
 
 export const APP_ROUTES: Routes = [
   {
@@ -16,11 +15,20 @@ export const APP_ROUTES: Routes = [
     pathMatch: 'full',
   },
 
-  // Your route here:
+  // {
+  //   path: 'flights',
+  //   loadChildren: () => import('mfe1/Module').then((m) => m.FlightsModule)
+  // },
 
   {
-    path: 'flights',
-    loadChildren: () => import('mfe1/Module').then((m) => m.FlightsModule)
+    matcher: startsWith('flights'),
+    component: WebComponentWrapper,
+    data: {
+      remoteEntry: 'http://localhost:3000/remoteEntry.js',
+      remoteName: 'mfe1',
+      exposedModule: './web-components',
+      elementName: 'mfe1-element'
+    } as WebComponentWrapperOptions
   },
 
 

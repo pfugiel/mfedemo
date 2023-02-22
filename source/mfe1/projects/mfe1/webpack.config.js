@@ -1,22 +1,31 @@
-const { share, shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
+const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const mf = require('@angular-architects/module-federation/webpack');
+const share = mf.share;
 
-module.exports = withModuleFederationPlugin({
-
-  name: 'mfe1',
-
-  exposes: {
-    './Module': './projects/mfe1/src/app/flights/flights.module.ts',
+module.exports = {
+  output: {
+    publicPath: "auto",
+    uniqueName: "mfe1"
   },
-
-  // shared: {
-  //   ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-  // },
-
-  shared: share({
-    "@angular/core": { requiredVersion: 'auto', singleton: true },
-    "@angular/common": { requiredVersion: 'auto', singleton: true },
-    "@angular/router": { requiredVersion: 'auto', singleton: true },
-    "@angular/common/http": { requiredVersion: 'auto', singleton: true },
-  }),
-
-});
+  optimization: {
+    // Only needed to bypass a temporary bug
+    runtimeChunk: false
+  },
+  plugins: [
+    new ModuleFederationPlugin({
+        // For remotes (please adjust)
+        name: "mfe1",
+        filename: "remoteEntry.js",
+        exposes: {
+          './web-components': './projects/mfe1/src/bootstrap.ts',
+        },
+        shared: share({
+          "@angular/core": { requiredVersion: 'auto' },
+          "@angular/common": { requiredVersion: 'auto' },
+          "@angular/common/http": { requiredVersion: 'auto' },
+          "@angular/router": { requiredVersion: 'auto' },
+        })
+      }
+    )
+  ],
+};
