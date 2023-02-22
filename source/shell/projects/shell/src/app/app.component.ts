@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, Inject, Injector, ComponentFactoryResolver } from '@angular/core';
+import { Component, VERSION, ViewChild, ViewContainerRef, Inject, Injector, ComponentFactoryResolver } from '@angular/core';
 import { AuthLibService } from 'auth-lib';
 import { HttpClient } from '@angular/common/http';
 
@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
   title = 'shell';
+  version = VERSION;
 
   constructor(private service: AuthLibService, http: HttpClient) {
     this.service.login('Max', null);
